@@ -1,0 +1,12 @@
+<form>
+	<p>
+		<span color="header" font="header">Aktien</span>
+	</p>
+  	<p>
+		Liste aller Aktien.
+	</p>
+	<p>
+		Man kann die Einträge auf die Aktien, die aktuell im Bestand sind (Anzahl > 0) einschränken.
+		Zu den Aktien werden die Transaktionen, die Kosten und die Dividenden ausgegeben.    
+	</p>
+</form>

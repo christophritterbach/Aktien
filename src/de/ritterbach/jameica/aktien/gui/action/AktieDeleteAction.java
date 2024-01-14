@@ -25,7 +25,7 @@ public class AktieDeleteAction implements Action {
 				e1.printStackTrace();
 			}
 		if (aktie == null)
-			throw new ApplicationException(Settings.i18n().tr("Please choose a aktie"));
+			throw new ApplicationException(Settings.i18n().tr("please choose a aktie"));
 		try {
 			// before deleting the aktie, we show up a confirm dialog ;)
 			String question = Settings.i18n().tr("Do you really want to delete this aktie?");

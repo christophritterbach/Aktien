@@ -1,0 +1,13 @@
+<form>
+	<p>
+		<span color="header" font="header">Anlage einer neuen Aktie</span>
+	</p>
+	<p>
+		Wenn eine neue Aktie angelegt werden soll, dann muss gleichzeitig eine Transaktion eingegeben werden.
+		Im oberen Abschnitt werden ISIN, WKN und die Bezeichnung angegeben.
+		Im unteren Teil werden Informationen zur Transaktion angegeben. Kaufdatum, Anzahl, Kurs, Betrag und Kosten.
+		
+		Bei Käufen ist die Anzahl ein positiver Wert. Betrag und Kosten sind negative Werte. 
+		Bei Verkäufen sind die Anzahl und die Kosten negative Werte. Der ist ein positiver Wert. 
+	</p>
+</form>

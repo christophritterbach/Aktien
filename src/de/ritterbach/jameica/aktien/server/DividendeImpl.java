@@ -105,11 +105,11 @@ public class DividendeImpl extends AbstractDBObject implements Dividende {
 	protected void insertCheck() throws ApplicationException {
 		try {
 			if (getZahlDatum() == null)
-				throw new ApplicationException(Settings.i18n().tr("Please enter zahl_datum"));
+				throw new ApplicationException(Settings.i18n().tr("please enter zahl_datum"));
 			if (getProStueck() == null)
-				throw new ApplicationException(Settings.i18n().tr("Please enter pro_stueck"));
+				throw new ApplicationException(Settings.i18n().tr("please enter pro_stueck"));
 			if (getGesamt() == null)
-				throw new ApplicationException(Settings.i18n().tr("Please enter gesamt"));
+				throw new ApplicationException(Settings.i18n().tr("please enter gesamt"));
 
 		} catch (RemoteException e) {
 			Logger.error("insert check of dividende failed", e);

@@ -5,13 +5,13 @@ import java.rmi.RemoteException;
 
 import de.ritterbach.jameica.aktien.Settings;
 import de.ritterbach.jameica.aktien.rmi.Aktie;
+import de.ritterbach.jameica.aktien.rmi.Dividende;
 import de.ritterbach.jameica.aktien.rmi.Kauf;
 import de.ritterbach.jameica.aktien.rmi.V_Aktie;
 import de.willuhn.datasource.db.AbstractDBObject;
 import de.willuhn.datasource.rmi.DBIterator;
 import de.willuhn.datasource.rmi.DBService;
 import de.willuhn.datasource.rmi.ObjectNotFoundException;
-import de.willuhn.logging.Logger;
 import de.willuhn.util.ApplicationException;
 
 public class V_AktieImpl extends AbstractDBObject implements V_Aktie {
@@ -80,6 +80,36 @@ public class V_AktieImpl extends AbstractDBObject implements V_Aktie {
 	}
 
 	@Override
+	public BigDecimal getBetrag() throws RemoteException {
+		return (BigDecimal) getAttribute("betrag");
+	}
+
+	@Override
+	public void setBetrag(BigDecimal betrag) throws RemoteException {
+		setAttribute("betrag", betrag);
+	}
+
+	@Override
+	public BigDecimal getKosten() throws RemoteException {
+		return (BigDecimal) getAttribute("kosten");
+	}
+
+	@Override
+	public void setKosten(BigDecimal kosten) throws RemoteException {
+		setAttribute("kosten", kosten);
+	}
+
+	@Override
+	public BigDecimal getGesamt() throws RemoteException {
+		return (BigDecimal) getAttribute("gesamt");
+	}
+
+	@Override
+	public void setGesamt(BigDecimal gesamt) throws RemoteException {
+		setAttribute("gesamt", gesamt);
+	}
+
+	@Override
 	public String getPrimaryAttribute() throws RemoteException {
 		return "isin";
 	}
@@ -90,15 +120,15 @@ public class V_AktieImpl extends AbstractDBObject implements V_Aktie {
 	}
 
 	protected void insertCheck() throws ApplicationException {
-		throw new ApplicationException(Settings.i18n().tr("Can not store into view"));
+		throw new ApplicationException(Settings.i18n().tr("can not store into view"));
 	}
 
 	protected void updateCheck() throws ApplicationException {
-		throw new ApplicationException(Settings.i18n().tr("Can not store into view"));
+		throw new ApplicationException(Settings.i18n().tr("can not store into view"));
 	}
 
 	protected void deleteCheck() throws ApplicationException {
-		throw new ApplicationException(Settings.i18n().tr("Can not delete from view"));
+		throw new ApplicationException(Settings.i18n().tr("can not delete from view"));
 	}
 
 	@Override
@@ -113,4 +143,15 @@ public class V_AktieImpl extends AbstractDBObject implements V_Aktie {
 		}
 	}
 	
+	@Override
+	public DBIterator<Dividende> getDidivenden() throws RemoteException {
+		try {
+			DBService service = this.getService();
+			DBIterator<Dividende> dividendenListe = service.createList(Dividende.class);
+			dividendenListe.addFilter("aktien_id = ?", this.getID());
+			return dividendenListe;
+		} catch (Exception e) {
+			throw new RemoteException("unable to load dividende list", e);
+		}
+	}
 }

@@ -26,7 +26,7 @@ import de.willuhn.util.ApplicationException;
 import de.willuhn.util.ProgressMonitor;
 
 /**
- * Implementierung eines Update-Providers fuer StromGasWasser.
+ * Implementierung eines Update-Providers fuer Aktien.
  */
 public class AktienUpdateProvider implements UpdateProvider
 {

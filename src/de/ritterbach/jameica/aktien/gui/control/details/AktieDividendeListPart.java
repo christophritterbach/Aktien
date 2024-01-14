@@ -49,7 +49,7 @@ public class AktieDividendeListPart extends TablePart implements Part {
 		addColumn(i18n.tr("pro Stueck"), "pro_stueck", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
 		addColumn(i18n.tr("Gesamt"), "gesamt", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
 		addColumn(i18n.tr("Quellensteuer"), "quellensteuer", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
-		addColumn(i18n.tr("Wechselkurs"), "wechselkurs", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
+		addColumn(i18n.tr("Wechselkurs"), "devisenkurs", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
 		addColumn(i18n.tr("Waehrung"), "waehrung");
 		//setContextMenu(new DividendeMenu());
 		setRememberOrder(true);

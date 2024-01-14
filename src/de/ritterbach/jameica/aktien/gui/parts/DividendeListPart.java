@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.TabFolder;
 
 import de.ritterbach.jameica.aktien.AktienPlugin;
 import de.ritterbach.jameica.aktien.Settings;
+import de.ritterbach.jameica.aktien.rmi.Aktie;
 import de.ritterbach.jameica.aktien.rmi.V_Dividende;
 import de.willuhn.datasource.GenericIterator;
 import de.willuhn.datasource.rmi.DBIterator;
@@ -43,6 +44,7 @@ public class DividendeListPart extends TablePart implements Part {
 	private DBService service = null;
 	private Input from = null;
 	private Input to = null;
+	private Settings settings = null;
 
 	public DividendeListPart(Action action) throws RemoteException {
 		this(init(), action);
@@ -51,6 +53,7 @@ public class DividendeListPart extends TablePart implements Part {
 	public DividendeListPart(GenericIterator<V_Dividende> list, Action action) throws RemoteException {
 		super(list, action);
 		this.service = Settings.getDBService();
+		this.settings = new Settings(Aktie.class);
 		this.listener = new Listener() {
 			public void handleEvent(Event event) {
 				// Wenn das event "null" ist, kann es nicht von SWT ausgeloest worden sein
@@ -65,9 +68,10 @@ public class DividendeListPart extends TablePart implements Part {
 		addColumn(i18n.tr("pro Stueck"), "pro_stueck", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
 		addColumn(i18n.tr("Gesamt"), "gesamt", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
 		addColumn(i18n.tr("Quellensteuer"), "quellensteuer", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
-		addColumn(i18n.tr("Wechselkurs"), "wechselkurs", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
-		addColumn(i18n.tr("Waerhung"), "waehrung");
+		addColumn(i18n.tr("Wechselkurs"), "devisenkurs", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
+		addColumn(i18n.tr("Waehrung"), "waehrung");
 		addColumn(i18n.tr("ISIN"), "isin");
+		addColumn(i18n.tr("Bezeichnung"), "bezeichnung");
 		//setContextMenu(new DividendeMenu());
 		setRememberOrder(true);
 		setRememberColWidths(true);
@@ -110,7 +114,7 @@ public class DividendeListPart extends TablePart implements Part {
 		datum.set(Calendar.SECOND, 0);
 		datum.set(Calendar.MILLISECOND, 0);
 		datum.set(Calendar.DAY_OF_YEAR, datum.getActualMinimum(Calendar.DAY_OF_YEAR));
-		this.from = new DateInput(datum.getTime());
+		this.from = new DateInput(settings.getDate("from", datum.getTime()));
 		this.from.setName(i18n.tr("von"));
 		this.from.setComment(null);
 		this.from.addListener(this.listener);
@@ -126,7 +130,7 @@ public class DividendeListPart extends TablePart implements Part {
 		datum.set(Calendar.SECOND, 0);
 		datum.set(Calendar.MILLISECOND, 0);
 		datum.set(Calendar.DAY_OF_YEAR, datum.getActualMaximum(Calendar.DAY_OF_YEAR));
-		this.to = new DateInput(datum.getTime());
+		this.to = new DateInput(settings.getDate("to", datum.getTime()));
 		this.to.setName(i18n.tr("bis"));
 		this.to.setComment(null);
 		this.to.addListener(this.listener);
@@ -146,6 +150,8 @@ public class DividendeListPart extends TablePart implements Part {
 						while (kaufListe.hasNext())
 							addItem(kaufListe.next());
 						sort();
+						settings.setAttribute("from", (Date) getFrom().getValue());
+						settings.setAttribute("to", (Date) getTo().getValue());
 					} catch (Exception e) {
 						Logger.error("error while reloading table", e);
 						Application.getMessagingFactory().sendMessage(new StatusBarMessage(

@@ -1,0 +1,12 @@
+<form>
+	<p>
+		<span color="header" font="header">Dividenden</span>
+	</p>
+  	<p>
+		Liste aller Dividendenzahlungen.
+	</p>
+	<p>
+		Man kann die Einträge auf die Dividendenzahlungen in einem vorgegebenen Zeitraum einschränken.
+		Es werden das Datum der Zahlung, der Betrag pro Stück, der Betrag und die ISIN des Wertpapiers ausgegeben. 
+	</p>
+</form>

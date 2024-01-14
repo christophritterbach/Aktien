@@ -21,6 +21,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.Locale;
 
 import de.ritterbach.jameica.aktien.rmi.AktienDBService;
@@ -32,11 +33,27 @@ import de.willuhn.util.I18N;
 /**
  * This class holds some settings for our plugin.
  */
-public class Settings {
+public class Settings extends de.willuhn.util.Settings {
 
 	private static AktienDBService db = null;
 	private static I18N i18n;
 
+	public Settings(Class clazz) {
+		this(clazz, true);
+	}
+
+	public Settings(Class clazz, boolean overridable) {
+		super("cfg", overridable ? Application.getConfig().getConfigDir() : null, clazz);
+	}
+
+	public Date getDate(String name, Date defaultValue) {
+		return new Date(super.getLong(name, defaultValue.getTime()));
+	}
+	
+	public void setAttribute(String name, Date value) {
+		super.setAttribute(name, value.getTime());
+	}
+	
 	/**
 	 * Our DateFormatter.
 	 */
@@ -49,7 +66,7 @@ public class Settings {
 	public final static DecimalFormat DECIMALFORMAT = (DecimalFormat) DecimalFormat
 			.getInstance(Application.getConfig().getLocale());
 
-	public final static DecimalFormat ARBEITSPREISFORMAT = new DecimalFormat("#0.000000",
+	public final static DecimalFormat ANZAHLFORMAT = new DecimalFormat("#0.000",
 			new DecimalFormatSymbols(Application.getConfig().getLocale()));
 
 	/**
@@ -72,7 +89,7 @@ public class Settings {
 		if (db != null)
 			return db;
 		try {
-			db = (AktienDBService) Application.getServiceFactory().lookup(AktienPlugin.class,"aktien");
+			db = (AktienDBService) Application.getServiceFactory().lookup(AktienPlugin.class, "aktien");
 			return db;
 		} catch (ConnectException ce) {
 			// Die Exception fliegt nur bei RMI-Kommunikation mit fehlendem RMI-Server

@@ -1,0 +1,12 @@
+<form>
+	<p>
+		<span color="header" font="header">Transaktionen</span>
+	</p>
+  	<p>
+		Liste aller Transkationen.
+	</p>
+	<p>
+		Man kann die Einträge auf die Transkationen in einem vorgegebenen Zeitraum einschränken.
+		Es werden Datum, Anzahl, Kurs und Kosten ausgegeben. Dazu wird die ISIN des Wertpapiers ausgegeben.    
+	</p>
+</form>

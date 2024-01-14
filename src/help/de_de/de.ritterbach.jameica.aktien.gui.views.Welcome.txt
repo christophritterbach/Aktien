@@ -1,0 +1,9 @@
+<form>
+	<p>
+		<span color="header" font="header">Willkommen</span>
+	</p>
+
+	<p>
+	  Das ist ein Plugin für die Erfassung von Aktien, deren Transaktionen und Dividendenzahlungen.
+	</p>
+</form>

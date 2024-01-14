@@ -58,7 +58,8 @@ COMMIT;
 
 CREATE VIEW v_aktien
 AS
-SELECT aktien.id, aktien.wkn, aktien.isin, aktien.bezeichnung, NVL(SUM(kauf.Anzahl), 0) AS anzahl
+SELECT aktien.id, aktien.wkn, aktien.isin, aktien.bezeichnung, NVL(SUM(kauf.Anzahl), 0) AS anzahl, NVL(SUM(kauf.betrag), 0) AS betrag, NVL(SUM(kauf.kosten), 0) AS kosten
+     , NVL((SELECT SUM(gesamt) FROM dividende where dividende.aktien_id = aktien.id), 0) as gesamt
  FROM aktien 
  LEFT OUTER JOIN kauf
    ON kauf.aktien_id = aktien.id

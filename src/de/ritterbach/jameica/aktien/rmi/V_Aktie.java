@@ -17,5 +17,12 @@ public interface V_Aktie extends DBObject {
 	public void setBezeichnung(String bezeichnung) throws RemoteException;
 	public BigDecimal getAnzahl() throws RemoteException;
 	public void setAnzahl(BigDecimal anzahl) throws RemoteException;
+	public BigDecimal getBetrag() throws RemoteException;
+	public void setBetrag(BigDecimal betrag) throws RemoteException;
+	public BigDecimal getKosten() throws RemoteException;
+	public void setKosten(BigDecimal kosten) throws RemoteException;
+	public BigDecimal getGesamt() throws RemoteException;
+	public void setGesamt(BigDecimal gesamt) throws RemoteException;
 	public DBIterator<Kauf> getKaeufe() throws RemoteException;
+	public DBIterator<Dividende> getDidivenden() throws RemoteException;
 }

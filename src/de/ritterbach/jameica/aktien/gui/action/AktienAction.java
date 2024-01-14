@@ -8,7 +8,7 @@ public class AktienAction implements Action {
 
 	@Override
 	public void handleAction(Object context) throws ApplicationException {
-		GUI.startView(de.ritterbach.jameica.aktien.gui.views.lists.Aktien.class.getName(), null);
+		GUI.startView(de.ritterbach.jameica.aktien.gui.views.lists.AktieView.class.getName(), null);
 	}
 
 }

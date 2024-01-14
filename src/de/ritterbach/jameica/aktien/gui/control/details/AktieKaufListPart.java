@@ -49,7 +49,7 @@ public class AktieKaufListPart extends TablePart implements Part {
 		addColumn(i18n.tr("Anzahl"), "anzahl");
 		addColumn(i18n.tr("Kurs"), "kurs", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
 		addColumn(i18n.tr("Betrag"), "betrag", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
-		addColumn(i18n.tr("Kosten"), "kosten", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
+		addColumn(i18n.tr("T_Kosten"), "kosten", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
 		addColumn(i18n.tr("Bemerkung"), "bemerkung");
 		//setContextMenu(new KaufMenu());
 		setRememberOrder(true);

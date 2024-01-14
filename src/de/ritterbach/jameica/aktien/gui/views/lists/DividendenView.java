@@ -6,7 +6,7 @@ import de.willuhn.jameica.gui.AbstractView;
 import de.willuhn.jameica.gui.GUI;
 import de.willuhn.util.ApplicationException;
 
-public class Dividenden extends AbstractView {
+public class DividendenView extends AbstractView {
 
 	@Override
 	public void bind() throws Exception {

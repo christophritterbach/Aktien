@@ -79,15 +79,15 @@ public class AktieImpl extends AbstractDBObject implements Aktie {
 	protected void insertCheck() throws ApplicationException {
 		try {
 			if (getIsin() == null)
-				throw new ApplicationException(Settings.i18n().tr("Please enter isin"));
+				throw new ApplicationException(Settings.i18n().tr("please enter isin"));
 			if (getIsin().length() < 12)
 				throw new ApplicationException(Settings.i18n().tr("isin has 12 characters"));
 			if (getWkn() == null)
-				throw new ApplicationException(Settings.i18n().tr("Please enter wkn"));
-			if (getWkn().length() < 12)
-				throw new ApplicationException(Settings.i18n().tr("wkn has 12 characters"));
+				throw new ApplicationException(Settings.i18n().tr("please enter wkn"));
+			if (getWkn().length() < 6)
+				throw new ApplicationException(Settings.i18n().tr("wkn has 6 characters"));
 			if (getBezeichnung() == null)
-				throw new ApplicationException(Settings.i18n().tr("Please enter bezeichnung"));
+				throw new ApplicationException(Settings.i18n().tr("please enter bezeichnung"));
 
 		} catch (RemoteException e) {
 			Logger.error("insert check of aktie failed", e);

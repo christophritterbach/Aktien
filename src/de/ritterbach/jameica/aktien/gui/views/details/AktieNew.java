@@ -23,7 +23,7 @@ public class AktieNew extends AbstractView {
 		// instanciate controller
 		final AktieNewControl control = new AktieNewControl(this);
 		Container c = new SimpleContainer(getParent());
-		c.addHeadline("Aktie");
+		c.addHeadline(Settings.i18n().tr("Aktie"));
 		// layout with 2 columns
 		ColumnLayout columns = new ColumnLayout(c.getComposite(), 3);
 		// left side
@@ -33,7 +33,7 @@ public class AktieNew extends AbstractView {
 		middle.addInput(control.getWkn());
 		Container right = new SimpleContainer(columns.getComposite(), true);
 		right.addInput(control.getBezeichnung());
-		c.addHeadline("Kauf");
+		c.addHeadline(Settings.i18n().tr("Kauf"));
 		ColumnLayout columns1 = new ColumnLayout(c.getComposite(), 2);
 		Container left1 = new SimpleContainer(columns1.getComposite());
 		left1.addInput(control.getKaufDatum());

@@ -125,7 +125,7 @@ public class AktienPlugin extends AbstractPlugin {
 	      {
 	        msg += "\n\nMöglicherweise ist die Aktien-Datenbank defekt. Klicken Sie bitte auf \"Datei>Backups verwalten\", " +
 	        		   "wählen Sie das Backup vom letzten Tag aus, an dem der Fehler noch nicht auftrat und klicken " +
-	        		   "Sie anschließend auf \"Ausgewähltes Backup wiederherstellen...\". Beim nächsten Start von StromGasWasser" +
+	        		   "Sie anschließend auf \"Ausgewähltes Backup wiederherstellen...\". Beim nächsten Start von Aktie" +
 	        		   "wird das Backup automatisch wiederhergestellt. Sollte sich das Problem hierdurch nicht beheben lassen, " +
 	        		   "besuchen Sie bitte http://www.willuhn.de/wiki/doku.php?id=support:fehlermelden";
 	      }

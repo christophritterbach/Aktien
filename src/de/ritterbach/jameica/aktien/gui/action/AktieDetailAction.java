@@ -31,7 +31,7 @@ public class AktieDetailAction implements Action {
 		} else {
 			throw new ApplicationException(Settings.i18n().tr("error while creating new aktie"));
 		}
-		GUI.startView(de.ritterbach.jameica.aktien.gui.views.details.Aktie.class.getName(), aktie);
+		GUI.startView(de.ritterbach.jameica.aktien.gui.views.details.AktieView.class.getName(), aktie);
 	}
 
 }

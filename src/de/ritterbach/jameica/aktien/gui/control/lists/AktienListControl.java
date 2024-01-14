@@ -10,11 +10,11 @@ import de.willuhn.jameica.gui.Action;
 import de.willuhn.jameica.gui.Part;
 import de.willuhn.util.ApplicationException;
 
-public class AktienControl extends AbstractControl {
+public class AktienListControl extends AbstractControl {
 
 	private Part list = null;
 
-	public AktienControl(AbstractView view) {
+	public AktienListControl(AbstractView view) {
 		super(view);
 	}
 

@@ -132,15 +132,15 @@ public class V_KaufImpl extends AbstractDBObject implements V_Kauf {
 	}
 
 	protected void insertCheck() throws ApplicationException {
-		throw new ApplicationException(Settings.i18n().tr("Can not store into view"));
+		throw new ApplicationException(Settings.i18n().tr("can not store into view"));
 	}
 
 	protected void updateCheck() throws ApplicationException {
-		throw new ApplicationException(Settings.i18n().tr("Can not store into view"));
+		throw new ApplicationException(Settings.i18n().tr("can not store into view"));
 	}
 
 	protected void deleteCheck() throws ApplicationException {
-		throw new ApplicationException(Settings.i18n().tr("Can not delete from view"));
+		throw new ApplicationException(Settings.i18n().tr("can not delete from view"));
 	}
 
 }

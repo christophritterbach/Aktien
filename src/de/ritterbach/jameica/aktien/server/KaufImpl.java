@@ -105,11 +105,11 @@ public class KaufImpl extends AbstractDBObject implements Kauf {
 	protected void insertCheck() throws ApplicationException {
 		try {
 			if (getKaufDatum() == null)
-				throw new ApplicationException(Settings.i18n().tr("Please enter kauf_datum"));
+				throw new ApplicationException(Settings.i18n().tr("please enter kauf_datum"));
 			if (getAnzahl() == null)
-				throw new ApplicationException(Settings.i18n().tr("Please enter anzahl"));
+				throw new ApplicationException(Settings.i18n().tr("please enter anzahl"));
 			if (getBetrag() == null)
-				throw new ApplicationException(Settings.i18n().tr("Please enter betrag"));
+				throw new ApplicationException(Settings.i18n().tr("please enter betrag"));
 
 		} catch (RemoteException e) {
 			Logger.error("insert check of kauf failed", e);
