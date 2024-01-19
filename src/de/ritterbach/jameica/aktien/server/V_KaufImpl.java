@@ -88,7 +88,7 @@ public class V_KaufImpl extends AbstractDBObject implements V_Kauf {
 
 	@Override
 	public void setBemerkung(String bemerkung) throws RemoteException {
-		setAttribute("bemerkung", "bemerkung");
+		setAttribute("bemerkung", bemerkung);
 	}
 
 	@Override

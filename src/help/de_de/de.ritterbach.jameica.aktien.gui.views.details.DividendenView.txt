@@ -1,0 +1,11 @@
+<form>
+	<p>
+		<span color="header" font="header">Details zu Dividenden</span>
+	</p>
+	<p>
+		Hier können einzelne Dividendenzahlungen angesehen und eingegeben werden.
+		Pflichtangaben sind Datum, Dividende pro Stück und der Gesamtbetrag.
+		Die Quellensteuer kann angegeben werden, anderenfalls wird sie zu 0 angenommen.
+		Der Wechselkurs ist sinnvoll für ausländische Aktien. Dann sollte auch die Währung angegeben werden.
+	</p>
+</form>

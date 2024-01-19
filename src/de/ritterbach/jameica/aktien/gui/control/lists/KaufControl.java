@@ -2,8 +2,10 @@ package de.ritterbach.jameica.aktien.gui.control.lists;
 
 import java.rmi.RemoteException;
 
+import de.ritterbach.jameica.aktien.gui.action.KaufDetailAction;
 import de.ritterbach.jameica.aktien.gui.parts.KaufListPart;
-import de.ritterbach.jameica.aktien.rmi.Aktie;
+import de.ritterbach.jameica.aktien.rmi.Kauf;
+import de.ritterbach.jameica.aktien.rmi.V_Kauf;
 import de.willuhn.jameica.gui.AbstractControl;
 import de.willuhn.jameica.gui.AbstractView;
 import de.willuhn.jameica.gui.Action;
@@ -24,8 +26,11 @@ public class KaufControl extends AbstractControl {
 		list = new KaufListPart(new Action() {
 			@Override
 			public void handleAction(Object context) throws ApplicationException {
-				if (!(context instanceof Aktie))
-					return;
+				if (context instanceof Kauf)
+					new KaufDetailAction().handleAction(context);
+				if (context instanceof V_Kauf)
+					new KaufDetailAction().handleAction(context);
+				return;
 			}
 		});
 		return list;

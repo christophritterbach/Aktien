@@ -3,6 +3,8 @@ package de.ritterbach.jameica.aktien.gui.control.details;
 import java.rmi.RemoteException;
 
 import de.ritterbach.jameica.aktien.Settings;
+import de.ritterbach.jameica.aktien.gui.action.DividendeDetailAction;
+import de.ritterbach.jameica.aktien.gui.action.KaufDetailAction;
 import de.ritterbach.jameica.aktien.rmi.Aktie;
 import de.ritterbach.jameica.aktien.rmi.V_Aktie;
 import de.willuhn.datasource.rmi.DBIterator;
@@ -114,18 +116,18 @@ public class AktieControl extends AbstractControl {
 			return kosten;
 		
 		this.kosten = new DecimalInput(vAktie.getKosten(), Settings.DECIMALFORMAT);
-		this.kosten.setName(Settings.i18n().tr("T_Kosten"));
+		this.kosten.setName(Settings.i18n().tr("Kosten"));
 		this.kosten.setComment(Settings.i18n().tr("kosten_kauf_verkauf"));
 		this.kosten.setEnabled(false);
 		return this.kosten;
 	}
 
 	public TablePart getKaufListPart() throws RemoteException {
-		return new AktieKaufListPart(aktie.getKaeufe(), null);
+		return new AktieKaufListPart(aktie.getKaeufe(), new KaufDetailAction(), aktie);
 	}
 	
 	public TablePart getDivideneListPart() throws RemoteException {
-		return new AktieDividendeListPart(aktie.getDidivenden(), null);
+		return new AktieDividendeListPart(aktie.getDidivenden(), new DividendeDetailAction(), aktie);
 	}
 	
 	public void handleStore() {

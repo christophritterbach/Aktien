@@ -1,0 +1,13 @@
+<form>
+	<p>
+		<span color="header" font="header">Details zur Transaktion</span>
+	</p>
+	<p>
+		Hier können einzelne Transkation angesehen und eingegeben werden.
+		Pflichtangaben sind Datum, Anzahl, Kurs und der Gesamtbetrag.
+		
+		Bei Käufen ist die Anzahl ein positiver Wert. Betrag und Kosten sind negative Werte. 
+		Bei Verkäufen sind die Anzahl und die Kosten negative Werte. Der ist ein positiver Wert.
+		In der Bemerkung können Details zu den Kosten angegeben werden oder andere wichtige Informationen. 
+	</p>
+</form>

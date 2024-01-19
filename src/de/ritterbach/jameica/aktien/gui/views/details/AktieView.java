@@ -70,7 +70,7 @@ public class AktieView extends AbstractView {
 	    TablePart dlp  = control.getDivideneListPart();
 	    dlp.paint(tg1.getComposite());
 	    
-	    final TabGroup tg2 = new TabGroup(folder,Settings.i18n().tr("T_Kosten"),true,1);
+	    final TabGroup tg2 = new TabGroup(folder,Settings.i18n().tr("Kosten"),true,1);
 	    TablePart klp  = control.getKaufListPart();
 	    klp.paint(tg2.getComposite());
 		

@@ -79,6 +79,8 @@ public class KaufImpl extends AbstractDBObject implements Kauf {
 
 	@Override
 	public void setKosten(BigDecimal kosten) throws RemoteException {
+		if (kosten == null)
+			kosten = BigDecimal.ZERO;
 		setAttribute("kosten", kosten);
 	}
 
@@ -89,7 +91,7 @@ public class KaufImpl extends AbstractDBObject implements Kauf {
 
 	@Override
 	public void setBemerkung(String bemerkung) throws RemoteException {
-		setAttribute("bemerkung", "bemerkung");
+		setAttribute("bemerkung", bemerkung);
 	}
 
 	@Override
@@ -100,6 +102,16 @@ public class KaufImpl extends AbstractDBObject implements Kauf {
 	@Override
 	protected String getTableName() {
 		return "kauf";
+	}
+
+	@Override
+	protected Class getForeignObject(String field) throws RemoteException {
+		// the system is able to resolve foreign keys and loads
+		// the according objects automatically. You only have to
+		// define which class handles which foreign key.
+		if ("aktien_id".equals(field))
+			return Aktie.class;
+		return null;
 	}
 
 	protected void insertCheck() throws ApplicationException {

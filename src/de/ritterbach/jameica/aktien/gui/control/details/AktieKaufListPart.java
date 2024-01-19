@@ -11,6 +11,8 @@ import org.eclipse.swt.widgets.TabFolder;
 
 import de.ritterbach.jameica.aktien.AktienPlugin;
 import de.ritterbach.jameica.aktien.Settings;
+import de.ritterbach.jameica.aktien.gui.menu.KaufMenu;
+import de.ritterbach.jameica.aktien.rmi.Aktie;
 import de.ritterbach.jameica.aktien.rmi.Kauf;
 import de.willuhn.datasource.GenericIterator;
 import de.willuhn.datasource.rmi.DBIterator;
@@ -32,7 +34,7 @@ public class AktieKaufListPart extends TablePart implements Part {
 	private Listener listener;
 	private DBService service = null;
 
-	public AktieKaufListPart(GenericIterator<Kauf> list, Action action) throws RemoteException {
+	public AktieKaufListPart(GenericIterator<Kauf> list, Action action, Aktie aktie) throws RemoteException {
 		super(list, action);
 		this.service = Settings.getDBService();
 		this.listener = new Listener() {
@@ -49,9 +51,9 @@ public class AktieKaufListPart extends TablePart implements Part {
 		addColumn(i18n.tr("Anzahl"), "anzahl");
 		addColumn(i18n.tr("Kurs"), "kurs", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
 		addColumn(i18n.tr("Betrag"), "betrag", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
-		addColumn(i18n.tr("T_Kosten"), "kosten", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
+		addColumn(i18n.tr("Kosten"), "kosten", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
 		addColumn(i18n.tr("Bemerkung"), "bemerkung");
-		//setContextMenu(new KaufMenu());
+		setContextMenu(new KaufMenu(aktie));
 		setRememberOrder(true);
 		setRememberColWidths(true);
 	}

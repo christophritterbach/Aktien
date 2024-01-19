@@ -69,6 +69,8 @@ public class DividendeImpl extends AbstractDBObject implements Dividende {
 
 	@Override
 	public void setQuellensteuer(BigDecimal quellensteuer) throws RemoteException {
+		if (quellensteuer == null)
+			quellensteuer = BigDecimal.ZERO;
 		setAttribute("quellensteuer", quellensteuer);
 	}
 
@@ -79,17 +81,21 @@ public class DividendeImpl extends AbstractDBObject implements Dividende {
 
 	@Override
 	public void setDevisenkurs(BigDecimal devisenkurs) throws RemoteException {
+		if (devisenkurs == null)
+			devisenkurs = BigDecimal.ONE;
 		setAttribute("devisenkurs", devisenkurs);
 	}
 
 	@Override
 	public String getWaehrung() throws RemoteException {
-		return (String) getAttribute("bemerkung");
+		return (String) getAttribute("waehrung");
 	}
 
 	@Override
 	public void setWaehrung(String waehrung) throws RemoteException {
-		setAttribute("waehrung", "waehrung");
+		if (waehrung == null || waehrung.length() == 0)
+			waehrung = Settings.CURRENCY;
+		setAttribute("waehrung", waehrung);
 	}
 
 	@Override
@@ -100,6 +106,16 @@ public class DividendeImpl extends AbstractDBObject implements Dividende {
 	@Override
 	protected String getTableName() {
 		return "dividende";
+	}
+
+	@Override
+	protected Class getForeignObject(String field) throws RemoteException {
+		// the system is able to resolve foreign keys and loads
+		// the according objects automatically. You only have to
+		// define which class handles which foreign key.
+		if ("aktien_id".equals(field))
+			return Aktie.class;
+		return null;
 	}
 
 	protected void insertCheck() throws ApplicationException {

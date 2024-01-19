@@ -11,6 +11,8 @@ import org.eclipse.swt.widgets.TabFolder;
 
 import de.ritterbach.jameica.aktien.AktienPlugin;
 import de.ritterbach.jameica.aktien.Settings;
+import de.ritterbach.jameica.aktien.gui.menu.DividendeMenu;
+import de.ritterbach.jameica.aktien.rmi.Aktie;
 import de.ritterbach.jameica.aktien.rmi.Dividende;
 import de.willuhn.datasource.GenericIterator;
 import de.willuhn.datasource.rmi.DBIterator;
@@ -32,7 +34,7 @@ public class AktieDividendeListPart extends TablePart implements Part {
 	private Listener listener;
 	private DBService service = null;
 
-	public AktieDividendeListPart(GenericIterator<Dividende> list, Action action) throws RemoteException {
+	public AktieDividendeListPart(GenericIterator<Dividende> list, Action action, Aktie aktie) throws RemoteException {
 		super(list, action);
 		this.service = Settings.getDBService();
 		this.listener = new Listener() {
@@ -51,7 +53,7 @@ public class AktieDividendeListPart extends TablePart implements Part {
 		addColumn(i18n.tr("Quellensteuer"), "quellensteuer", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
 		addColumn(i18n.tr("Wechselkurs"), "devisenkurs", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
 		addColumn(i18n.tr("Waehrung"), "waehrung");
-		//setContextMenu(new DividendeMenu());
+		setContextMenu(new DividendeMenu(aktie));
 		setRememberOrder(true);
 		setRememberColWidths(true);
 	}

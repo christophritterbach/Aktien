@@ -125,7 +125,7 @@ public class AktieNewControl extends AbstractControl {
 		if (kosten != null)
 			return kosten;
 		kosten = new DecimalInput(getKauf().getKosten(), Settings.DECIMALFORMAT);
-		kosten.setName(Settings.i18n().tr("T_Kosten"));
+		kosten.setName(Settings.i18n().tr("Kosten"));
 		kosten.setComment(Settings.CURRENCY);
 		return kosten;
 	}
