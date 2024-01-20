@@ -51,9 +51,9 @@
     <!-- Same procedure as in the menu tag //-->
 
     <item name="Aktien" icon-close="folder.png" icon-open="folder-open.png" action="de.ritterbach.jameica.aktien.gui.action.Welcome">
-      <item id="navi.aktien"        name="Aktien"       icon-close="kosten.png"        action="de.ritterbach.jameica.aktien.gui.action.AktienAction" />
-      <item id="navi.kauf"          name="Kauf"         icon-close="kosten.png"        action="de.ritterbach.jameica.aktien.gui.action.KaufAction" />
-      <item id="navi.dividende"     name="Dividende"    icon-close="kosten.png"        action="de.ritterbach.jameica.aktien.gui.action.DividendeAction" />
+      <item id="navi.aktien"        name="Aktien"       icon-close="aktie.png"     action="de.ritterbach.jameica.aktien.gui.action.AktienAction" />
+      <item id="navi.kauf"          name="Kauf"         icon-close="kauf.png"      action="de.ritterbach.jameica.aktien.gui.action.KaufAction" />
+      <item id="navi.dividende"     name="Dividende"    icon-close="dividende.png" action="de.ritterbach.jameica.aktien.gui.action.DividendeAction" />
     </item>
   </navigation>
 

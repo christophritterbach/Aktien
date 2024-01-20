@@ -56,27 +56,11 @@ INSERT INTO version (name,version) values ('db',1);
   
 COMMIT;
 
-CREATE VIEW v_aktien
-AS
-SELECT aktien.id, aktien.wkn, aktien.isin, aktien.bezeichnung, NVL(SUM(kauf.Anzahl), 0) AS anzahl, NVL(SUM(kauf.betrag), 0) AS betrag, NVL(SUM(kauf.kosten), 0) AS kosten
-     , NVL((SELECT SUM(gesamt) FROM dividende where dividende.aktien_id = aktien.id), 0) as gesamt
- FROM aktien 
- LEFT OUTER JOIN kauf
-   ON kauf.aktien_id = aktien.id
- GROUP BY wkn, isin, bezeichnung;
+CREATE VIEW v_aktien AS SELECT aktien.id, aktien.wkn, aktien.isin, aktien.bezeichnung, NVL(SUM(kauf.Anzahl), 0) AS anzahl, NVL(SUM(kauf.betrag), 0) AS betrag, NVL(SUM(kauf.kosten), 0) AS kosten
+ , NVL((SELECT SUM(gesamt) FROM dividende where dividende.aktien_id = aktien.id), 0) as gesamt FROM aktien LEFT OUTER JOIN kauf ON kauf.aktien_id = aktien.id GROUP BY wkn, isin, bezeichnung;
 
-CREATE VIEW v_kauf
-AS
-SELECT kauf.id, kauf.aktien_id, kauf.kauf_datum, kauf.anzahl, kauf.kurs, kauf.betrag, kauf.kosten, kauf.bemerkung
-     , aktien.wkn, aktien.isin, aktien.bezeichnung
-  FROM kauf
-  JOIN aktien
-    ON aktien.id = kauf.aktien_id;
+CREATE VIEW v_kauf AS SELECT kauf.id, kauf.aktien_id, kauf.kauf_datum, kauf.anzahl, kauf.kurs, kauf.betrag, kauf.kosten, kauf.bemerkung
+ , aktien.wkn, aktien.isin, aktien.bezeichnung FROM kauf JOIN aktien ON aktien.id = kauf.aktien_id;
 
-CREATE VIEW v_dividende
-AS
-SELECT dividende.id, dividende.aktien_id, dividende.zahl_datum, dividende.pro_stueck, dividende.gesamt, dividende.quellensteuer, dividende.devisenkurs, dividende.waehrung
-     , aktien.wkn, aktien.isin, aktien.bezeichnung
-  FROM dividende
-  JOIN aktien
-    ON aktien.id = dividende.aktien_id;
+CREATE VIEW v_dividende AS SELECT dividende.id, dividende.aktien_id, dividende.zahl_datum, dividende.pro_stueck, dividende.gesamt, dividende.quellensteuer, dividende.devisenkurs, dividende.waehrung
+ , aktien.wkn, aktien.isin, aktien.bezeichnung FROM dividende JOIN aktien ON aktien.id = dividende.aktien_id;

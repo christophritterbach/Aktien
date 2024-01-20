@@ -1,83 +1,66 @@
-CREATE TABLE zaehler (
+CREATE TABLE aktien (
       id                int(10) AUTO_INCREMENT
-    , name              VARCHAR(255) NOT NULL
-    , mess_einheit      VARCHAR(10)  NOT NULL
-    , ablese_einheit    VARCHAR(10)  NOT NULL
-    , nutzt_faktor      smallint NOT NULL
-    , ist_aktiv         smallint NOT NULL
+    , wkn               VARCHAR(6)    NOT NULL
+    , isin              VARCHAR(12)   NOT NULL
+    , bezeichnung       VARCHAR(100)  NOT NULL
     , UNIQUE KEY  (id)
-    , UNIQUE KEY  (name)
     , PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE kosten (
+CREATE TABLE kauf (
       id                 int(10) AUTO_INCREMENT
-    , zaehler_id         int(10) NOT NULL
-    , gueltig_von        date NOT NULL
-    , gueltig_bis        date NOT NULL
-    , abschlag_bis       date
-    , grundpreis         DECIMAL(6,2) NOT NULL
-    , arbeitspreis       DECIMAL(10,6) NOT NULL
-    , faktor             DECIMAL(10,6) NOT NULL
-    , abgerechnet        smallint NOT NULL
-    , neue_periode       smallint NOT NULL
-    , notiz              VARCHAR(1000)
-    , CONSTRAINT fk_kosten_zaehler
-      FOREIGN KEY (zaehler_id) REFERENCES zaehler (id)
-        ON DELETE CASCADE
+    , aktien_id          int(10) NOT NULL
+    , kauf_datum         date NOT NULL
+    , anzahl             DECIMAL(12,4) NOT NULL
+    , kurs               DECIMAL(8,4)  NOT NULL
+    , betrag             DECIMAL(10,2) NOT NULL
+    , kosten             DECIMAL(10,2) NOT NULL
+    , bemerkung          VARCHAR(1000)
     , UNIQUE      (id)
     , PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE abschlag (
+CREATE TABLE dividende (
       id                 int(10) AUTO_INCREMENT
-    , zaehler_id         int(10) NOT NULL
-    , abschlag_datum     date NOT NULL
-    , abschlag_betrag    DECIMAL(6,2) NOT NULL
-    , notiz              VARCHAR(255)
-    , CONSTRAINT fk_abschlag_zaehler
-      FOREIGN KEY (zaehler_id) REFERENCES zaehler (id)
-        ON DELETE CASCADE
-    , UNIQUE      (id)
-    , PRIMARY KEY (id)
-) ENGINE=InnoDB;
-
-CREATE TABLE zaehlerstand (
-      id                 int(10) AUTO_INCREMENT
-    , zaehler_id         int(10) NOT NULL
-    , ablese_datum       date NOT NULL
-    , ablese_wert        DECIMAL(10)
-    , verbrauch          DECIMAL(10)
-    , schaetzung         smallint NOT NULL
-    , zaehlerwechsel_aus smallint NOT NULL
-    , zaehlerwechsel_ein smallint NOT NULL
-    , notiz              varchar(255)
-    , CONSTRAINT fk_zaehlerstand_zaehler
-      FOREIGN KEY (zaehler_id) REFERENCES zaehler (id)
-        ON DELETE CASCADE
+    , aktien_id          int(10) NOT NULL
+    , zahl_datum         date NOT NULL
+    , pro_stueck         DECIMAL(5,3)  NOT NULL
+    , gesamt             DECIMAL(8,3)  NOT NULL
+    , quellensteuer      DECIMAL(8,3)  NOT NULL
+    , devisenkurs        DECIMAL(10,5) NOT NULL
+    , waehrung           VARCHAR(3)    NOT NULL
     , UNIQUE      (id)
     , PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE version (
-      id int(10) AUTO_INCREMENT
-    , name VARCHAR(255) NOT NULL
-    , version int(10) NOT NULL
-    , UNIQUE (id)
+      id                 int(10) AUTO_INCREMENT
+    , name               VARCHAR(255) NOT NULL
+    , version            int(10)   NOT NULL
+    , UNIQUE      (id)
     , PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
-CREATE INDEX idx_ab_datum ON abschlag(abschlag_datum);
-CREATE INDEX idx_ko_datum ON kosten(gueltig_von);
-CREATE INDEX idx_zs_datum ON zaehlerstand(ablese_datum);
-CREATE INDEX idx_ab_fk_zaehler ON abschlag(zaehler_id);
-CREATE INDEX idx_ko_fk_zaehler ON kosten(zaehler_id);
-CREATE INDEX idx_zs_fk_zaehler ON zaehlerstand(zaehler_id);
-
+CREATE INDEX idx_aktien_wkn ON aktien(wkn);
+CREATE INDEX idx_aktien_isin ON aktien(isin);
+CREATE INDEX idx_kauf_datum ON kauf(kauf_datum);
+CREATE INDEX idx_dividende_datum ON dividende(zahl_datum);
+CREATE INDEX idx_kauf_fk_aktien ON kauf(aktien_id);
+CREATE INDEX idx_dividende_fk_aktien ON dividende(aktien_id);
+ALTER TABLE kauf      ADD CONSTRAINT fk_kauf_aktien      FOREIGN KEY (aktien_id) REFERENCES aktien (id);
+ALTER TABLE dividende ADD CONSTRAINT fk_dividenen_aktien FOREIGN KEY (aktien_id) REFERENCES aktien (id);
 -- Bevor wir Daten speichern koennen, muessen wir ein COMMIT machen
 COMMIT;
 
-INSERT INTO zaehler (name, mess_einheit, ablese_einheit, nutzt_faktor, ist_aktiv) VALUES ('Wasseruhr', 'm³', 'm³', 0, 1);
-INSERT INTO zaehler (name, mess_einheit, ablese_einheit, nutzt_faktor, ist_aktiv) VALUES ('Stromzaehler', 'kWh', 'kWh', 0, 1);
-
 INSERT INTO version (name,version) values ('db',1);
+  
+COMMIT;
+
+CREATE VIEW v_aktien AS SELECT aktien.id, aktien.wkn, aktien.isin, aktien.bezeichnung, IFNULL(SUM(kauf.Anzahl), 0) AS anzahl, IFNULL(SUM(kauf.betrag), 0) AS betrag, IFNULL(SUM(kauf.kosten), 0) AS kosten
+ , IFNULL((SELECT SUM(gesamt) FROM dividende where dividende.aktien_id = aktien.id), 0) as gesamt FROM aktien LEFT OUTER JOIN kauf ON kauf.aktien_id = aktien.id GROUP BY wkn, isin, bezeichnung;
+
+CREATE VIEW v_kauf AS SELECT kauf.id, kauf.aktien_id, kauf.kauf_datum, kauf.anzahl, kauf.kurs, kauf.betrag, kauf.kosten, kauf.bemerkung
+ , aktien.wkn, aktien.isin, aktien.bezeichnung FROM kauf JOIN aktien ON aktien.id = kauf.aktien_id;
+
+CREATE VIEW v_dividende AS SELECT dividende.id, dividende.aktien_id, dividende.zahl_datum, dividende.pro_stueck, dividende.gesamt, dividende.quellensteuer, dividende.devisenkurs, dividende.waehrung
+ , aktien.wkn, aktien.isin, aktien.bezeichnung FROM dividende JOIN aktien ON aktien.id = dividende.aktien_id;

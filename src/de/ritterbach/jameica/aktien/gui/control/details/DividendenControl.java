@@ -113,7 +113,7 @@ public class DividendenControl extends AbstractControl {
 		if (quellensteuer != null)
 			return quellensteuer;
 
-		quellensteuer = new DecimalInput(getDividende().getProStueck(), Settings.DECIMALFORMAT);
+		quellensteuer = new DecimalInput(getDividende().getQuellensteuer(), Settings.DECIMALFORMAT);
 		quellensteuer.setName(Settings.i18n().tr("Quellensteuer"));
 		quellensteuer.setComment(Settings.CURRENCY);
 		return this.quellensteuer;
