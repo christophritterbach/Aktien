@@ -2,6 +2,7 @@ package de.ritterbach.jameica.aktien.server;
 
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
+import java.util.Date;
 
 import de.ritterbach.jameica.aktien.Settings;
 import de.ritterbach.jameica.aktien.rmi.Aktie;
@@ -107,6 +108,26 @@ public class V_AktieImpl extends AbstractDBObject implements V_Aktie {
 	@Override
 	public void setGesamt(BigDecimal gesamt) throws RemoteException {
 		setAttribute("gesamt", gesamt);
+	}
+
+	@Override
+	public Date getErsterKauf() throws RemoteException {
+		return (Date) getAttribute("erster_kauf");
+	}
+
+	@Override
+	public void setErsterKauf(Date ersterKauf) throws RemoteException {
+		setAttribute("erster_kauf", ersterKauf);
+	}
+	
+	@Override
+	public Date getLetzterKauf() throws RemoteException {
+		return (Date) getAttribute("letzter_kauf");
+	}
+	
+	@Override
+	public void setLetzterKauf(Date letzterKauf) throws RemoteException {
+		setAttribute("letzter_kauf", letzterKauf);
 	}
 
 	@Override

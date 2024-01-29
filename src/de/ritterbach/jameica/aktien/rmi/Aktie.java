@@ -14,4 +14,7 @@ public interface Aktie extends DBObject {
 	public void setBezeichnung(String bezeichnung) throws RemoteException;
 	public DBIterator<Kauf> getKaeufe() throws RemoteException;
 	public DBIterator<Dividende> getDidivenden() throws RemoteException;
+	public Aktie getAktieVon() throws RemoteException;
+	public void setAktieVon(Aktie aktie) throws RemoteException;
+	public DBIterator<Aktie> getAktienVon() throws RemoteException;
 }

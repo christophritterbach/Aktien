@@ -2,6 +2,7 @@ package de.ritterbach.jameica.aktien.rmi;
 
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
+import java.util.Date;
 
 import de.willuhn.datasource.rmi.DBIterator;
 import de.willuhn.datasource.rmi.DBObject;
@@ -23,6 +24,10 @@ public interface V_Aktie extends DBObject {
 	public void setKosten(BigDecimal kosten) throws RemoteException;
 	public BigDecimal getGesamt() throws RemoteException;
 	public void setGesamt(BigDecimal gesamt) throws RemoteException;
+	public Date getErsterKauf() throws RemoteException;
+	public void setErsterKauf(Date ersterKauf) throws RemoteException;
+	public Date getLetzterKauf() throws RemoteException;
+	public void setLetzterKauf(Date letzterKauf) throws RemoteException;
 	public DBIterator<Kauf> getKaeufe() throws RemoteException;
 	public DBIterator<Dividende> getDidivenden() throws RemoteException;
 }

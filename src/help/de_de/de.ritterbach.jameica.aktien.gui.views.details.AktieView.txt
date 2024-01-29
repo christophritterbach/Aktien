@@ -6,7 +6,9 @@
 		Im oberen Abschnitt werden ISIN, WKN und die Bezeichnung angegeben. Diese können geändert werden.
 		
 		Im mittleren Teil werden Umsätze angezeigt. Hier stehen Sumen zu den Transaktionen und den Dividenen.
-		
-		Im unteren Teil können in zwei Tabellen die einzelnen Transaktionen und Dividendenzahlungen eingesehen werden. 
+	</p>
+	<p>
+		Im unteren Teil können in zwei Tabellen die einzelnen Transaktionen und Dividendenzahlungen eingesehen werden.
+		Außerdem kann man sehen, welche Wertpapiere durch ein SplitOff aus dieser Aktie ins Depot eingebucht wurden.  
 	</p>
 </form>

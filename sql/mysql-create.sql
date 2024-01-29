@@ -3,6 +3,7 @@ CREATE TABLE aktien (
     , wkn               VARCHAR(6)    NOT NULL
     , isin              VARCHAR(12)   NOT NULL
     , bezeichnung       VARCHAR(100)  NOT NULL
+    , von_aktien_id     int(10)
     , UNIQUE KEY  (id)
     , PRIMARY KEY (id)
 ) ENGINE=InnoDB;
@@ -33,6 +34,17 @@ CREATE TABLE dividende (
     , PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
+CREATE TABLE kurs (
+      id                 int(10) AUTO_INCREMENT
+    , aktien_id          int(10) NOT NULL
+    , isin               VARCHAR(12)   NOT NULL
+    , kurs_datum         date NOT NULL
+    , kurs               DECIMAL(8,4)  NOT NULL
+    , bemerkung          VARCHAR(1000)
+    , UNIQUE      (id)
+    , PRIMARY KEY (id)
+);
+
 CREATE TABLE version (
       id                 int(10) AUTO_INCREMENT
     , name               VARCHAR(255) NOT NULL
@@ -43,12 +55,16 @@ CREATE TABLE version (
 
 CREATE INDEX idx_aktien_wkn ON aktien(wkn);
 CREATE INDEX idx_aktien_isin ON aktien(isin);
+CREATE INDEX idx_aktien_von_aktie ON aktien(von_aktien_id);
 CREATE INDEX idx_kauf_datum ON kauf(kauf_datum);
 CREATE INDEX idx_dividende_datum ON dividende(zahl_datum);
 CREATE INDEX idx_kauf_fk_aktien ON kauf(aktien_id);
 CREATE INDEX idx_dividende_fk_aktien ON dividende(aktien_id);
-ALTER TABLE kauf      ADD CONSTRAINT fk_kauf_aktien      FOREIGN KEY (aktien_id) REFERENCES aktien (id);
-ALTER TABLE dividende ADD CONSTRAINT fk_dividenen_aktien FOREIGN KEY (aktien_id) REFERENCES aktien (id);
+CREATE INDEX idx_kurs_fk_aktien ON kauf(aktien_id);
+ALTER TABLE kauf      ADD CONSTRAINT fk_kauf_aktien       FOREIGN KEY (aktien_id)     REFERENCES aktien (id);
+ALTER TABLE dividende ADD CONSTRAINT fk_dividenen_aktien  FOREIGN KEY (aktien_id)     REFERENCES aktien (id);
+ALTER TABLE aktien    ADD CONSTRAINT fk_von_aktien_aktien FOREIGN KEY (von_aktien_id) REFERENCES aktien (id);
+ALTER TABLE kurs      ADD CONSTRAINT fk_kurs_aktien       FOREIGN KEY (aktien_id)     REFERENCES aktien (id);
 -- Bevor wir Daten speichern koennen, muessen wir ein COMMIT machen
 COMMIT;
 
@@ -56,7 +72,8 @@ INSERT INTO version (name,version) values ('db',1);
   
 COMMIT;
 
-CREATE VIEW v_aktien AS SELECT aktien.id, aktien.wkn, aktien.isin, aktien.bezeichnung, IFNULL(SUM(kauf.Anzahl), 0) AS anzahl, IFNULL(SUM(kauf.betrag), 0) AS betrag, IFNULL(SUM(kauf.kosten), 0) AS kosten
+CREATE VIEW v_aktien AS SELECT aktien.id, aktien.wkn, aktien.isin, aktien.bezeichnung
+ , IFNULL(SUM(kauf.Anzahl), 0) AS anzahl, IFNULL(SUM(kauf.betrag), 0) AS betrag, IFNULL(SUM(kauf.kosten), 0) AS kosten, MIN(kauf.kauf_Datum) AS erster_kauf, MAX(kauf.kauf_Datum) AS letzter_kauf
  , IFNULL((SELECT SUM(gesamt) FROM dividende where dividende.aktien_id = aktien.id), 0) as gesamt FROM aktien LEFT OUTER JOIN kauf ON kauf.aktien_id = aktien.id GROUP BY wkn, isin, bezeichnung;
 
 CREATE VIEW v_kauf AS SELECT kauf.id, kauf.aktien_id, kauf.kauf_datum, kauf.anzahl, kauf.kurs, kauf.betrag, kauf.kosten, kauf.bemerkung

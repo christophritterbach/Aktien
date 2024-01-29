@@ -9,6 +9,7 @@ import de.ritterbach.jameica.aktien.rmi.Kauf;
 import de.willuhn.datasource.db.AbstractDBObject;
 import de.willuhn.datasource.rmi.DBIterator;
 import de.willuhn.datasource.rmi.DBService;
+import de.willuhn.datasource.rmi.ObjectNotFoundException;
 import de.willuhn.logging.Logger;
 import de.willuhn.util.ApplicationException;
 
@@ -49,6 +50,56 @@ public class AktieImpl extends AbstractDBObject implements Aktie {
 	}
 
 	@Override
+	public Aktie getAktieVon() throws RemoteException {
+		try {
+			return (Aktie) getAttribute("von_aktien_id");
+		} catch (ObjectNotFoundException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public void setAktieVon(Aktie aktie) throws RemoteException {
+		setAttribute("von_aktien_id", aktie);
+	}
+
+	@Override
+	public DBIterator<Aktie> getAktienVon() throws RemoteException {
+		try {
+			DBService service = this.getService();
+			DBIterator<Aktie> aktienVonListe = service.createList(Aktie.class);
+			aktienVonListe.addFilter("von_aktien_id = ?", this.getID());
+			return aktienVonListe;
+		} catch (Exception e) {
+			throw new RemoteException("unable to load aktien_von list", e);
+		}
+	}
+
+	@Override
+	public DBIterator<Kauf> getKaeufe() throws RemoteException {
+		try {
+			DBService service = this.getService();
+			DBIterator<Kauf> kaufListe = service.createList(Kauf.class);
+			kaufListe.addFilter("aktien_id = ?", this.getID());
+			return kaufListe;
+		} catch (Exception e) {
+			throw new RemoteException("unable to load kauf list", e);
+		}
+	}
+
+	@Override
+	public DBIterator<Dividende> getDidivenden() throws RemoteException {
+		try {
+			DBService service = this.getService();
+			DBIterator<Dividende> dividendenListe = service.createList(Dividende.class);
+			dividendenListe.addFilter("aktien_id = ?", this.getID());
+			return dividendenListe;
+		} catch (Exception e) {
+			throw new RemoteException("unable to load dividende list", e);
+		}
+	}
+
+	@Override
 	public String getPrimaryAttribute() throws RemoteException {
 		return "isin";
 	}
@@ -56,6 +107,16 @@ public class AktieImpl extends AbstractDBObject implements Aktie {
 	@Override
 	protected String getTableName() {
 		return "aktien";
+	}
+
+	@Override
+	protected Class getForeignObject(String field) throws RemoteException {
+		// the system is able to resolve foreign keys and loads
+		// the according objects automatically. You only have to
+		// define which class handles which foreign key.
+		if ("von_aktien_id".equals(field))
+			return Aktie.class;
+		return null;
 	}
 
 	public void delete() throws RemoteException, ApplicationException {
@@ -106,30 +167,6 @@ public class AktieImpl extends AbstractDBObject implements Aktie {
 		} catch (RemoteException e) {
 			Logger.error("delete check of aktie failed", e);
 			throw new ApplicationException(Settings.i18n().tr("unable to delete aktie"));
-		}
-	}
-
-	@Override
-	public DBIterator<Kauf> getKaeufe() throws RemoteException {
-		try {
-			DBService service = this.getService();
-			DBIterator<Kauf> kaufListe = service.createList(Kauf.class);
-			kaufListe.addFilter("aktien_id = ?", this.getID());
-			return kaufListe;
-		} catch (Exception e) {
-			throw new RemoteException("unable to load kauf list", e);
-		}
-	}
-
-	@Override
-	public DBIterator<Dividende> getDidivenden() throws RemoteException {
-		try {
-			DBService service = this.getService();
-			DBIterator<Dividende> dividendenListe = service.createList(Dividende.class);
-			dividendenListe.addFilter("aktien_id = ?", this.getID());
-			return dividendenListe;
-		} catch (Exception e) {
-			throw new RemoteException("unable to load dividende list", e);
 		}
 	}
 }
