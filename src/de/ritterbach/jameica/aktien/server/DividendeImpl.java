@@ -62,6 +62,10 @@ public class DividendeImpl extends AbstractDBObject implements Dividende {
 		setAttribute("gesamt", gesamt);
 	}
 
+	public void setGesamt(String sGesamt) throws RemoteException, ApplicationException {
+		setAttribute("gesamt", Settings.parseTableEntry(sGesamt, "gesamt"));
+	}
+
 	@Override
 	public BigDecimal getQuellensteuer() throws RemoteException {
 		return (BigDecimal) getAttribute("quellensteuer");
@@ -74,6 +78,10 @@ public class DividendeImpl extends AbstractDBObject implements Dividende {
 		setAttribute("quellensteuer", quellensteuer);
 	}
 
+	public void setQuellensteuer(String sQuellensteuer) throws RemoteException, ApplicationException {
+		setAttribute("quellensteuer", Settings.parseTableEntry(sQuellensteuer, "quellensteuer"));
+	}
+
 	@Override
 	public BigDecimal getDevisenkurs() throws RemoteException {
 		return (BigDecimal) getAttribute("devisenkurs");
@@ -84,6 +92,10 @@ public class DividendeImpl extends AbstractDBObject implements Dividende {
 		if (devisenkurs == null)
 			devisenkurs = BigDecimal.ONE;
 		setAttribute("devisenkurs", devisenkurs);
+	}
+
+	public void setDevisenkurs(String sDevisenkurs) throws RemoteException, ApplicationException {
+		setAttribute("devisenkurs", Settings.parseTableEntry(sDevisenkurs, "devisenkurs"));
 	}
 
 	@Override

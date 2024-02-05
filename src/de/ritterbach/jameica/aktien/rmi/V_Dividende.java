@@ -9,6 +9,7 @@ import de.willuhn.datasource.rmi.DBObject;
 public interface V_Dividende extends DBObject {
 	public Aktie getAktie() throws RemoteException;
 	public void setAktie(Aktie aktie) throws RemoteException;
+	public Dividende getDividende() throws RemoteException;
 	public Date getZahlDatum() throws RemoteException;
 	public void setZahlDatum(Date zahlDatum) throws RemoteException;
 	public BigDecimal getProStueck() throws RemoteException;

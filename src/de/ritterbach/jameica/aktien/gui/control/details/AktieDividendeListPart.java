@@ -11,9 +11,11 @@ import org.eclipse.swt.widgets.TabFolder;
 
 import de.ritterbach.jameica.aktien.AktienPlugin;
 import de.ritterbach.jameica.aktien.Settings;
+import de.ritterbach.jameica.aktien.formatter.KursFormatter;
 import de.ritterbach.jameica.aktien.gui.menu.DividendeMenu;
 import de.ritterbach.jameica.aktien.rmi.Aktie;
 import de.ritterbach.jameica.aktien.rmi.Dividende;
+import de.willuhn.datasource.BeanUtil;
 import de.willuhn.datasource.GenericIterator;
 import de.willuhn.datasource.rmi.DBIterator;
 import de.willuhn.datasource.rmi.DBService;
@@ -23,10 +25,12 @@ import de.willuhn.jameica.gui.Part;
 import de.willuhn.jameica.gui.formatter.CurrencyFormatter;
 import de.willuhn.jameica.gui.formatter.DateFormatter;
 import de.willuhn.jameica.gui.parts.Column;
+import de.willuhn.jameica.gui.parts.TableChangeListener;
 import de.willuhn.jameica.gui.parts.TablePart;
 import de.willuhn.jameica.messaging.StatusBarMessage;
 import de.willuhn.jameica.system.Application;
 import de.willuhn.logging.Logger;
+import de.willuhn.util.ApplicationException;
 import de.willuhn.util.I18N;
 
 public class AktieDividendeListPart extends TablePart implements Part {
@@ -49,10 +53,24 @@ public class AktieDividendeListPart extends TablePart implements Part {
 		this.i18n = Application.getPluginLoader().getPlugin(AktienPlugin.class).getResources().getI18N();
 		addColumn(i18n.tr("Datum"), "zahl_datum", new DateFormatter());
 		addColumn(i18n.tr("pro Stueck"), "pro_stueck", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
-		addColumn(i18n.tr("Gesamt"), "gesamt", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
-		addColumn(i18n.tr("Quellensteuer"), "quellensteuer", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
-		addColumn(i18n.tr("Wechselkurs"), "devisenkurs", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
+		addColumn(i18n.tr("Gesamt"), "gesamt", new CurrencyFormatter(Settings.CURRENCY, null), true, Column.ALIGN_RIGHT);
+		addColumn(i18n.tr("Quellensteuer"), "quellensteuer", new CurrencyFormatter(Settings.CURRENCY, null), true, Column.ALIGN_RIGHT);
+		addColumn(i18n.tr("Wechselkurs"), "devisenkurs", new KursFormatter(null), true, Column.ALIGN_RIGHT);
 		addColumn(i18n.tr("Waehrung"), "waehrung");
+		addChangeListener(new TableChangeListener() {
+			public void itemChanged(Object object, String attribute, String newValue) throws ApplicationException {
+				try {
+					Dividende dividende = (Dividende) object;
+					BeanUtil.set(dividende, attribute, newValue);
+					dividende.store();
+				} catch (ApplicationException ae) {
+					throw ae;
+				} catch (Exception e) {
+					Logger.error("unable to apply changes", e);
+					throw new ApplicationException(i18n.tr("Fehlgeschlagen: {0}", e.getMessage()));
+				}
+			}
+		});
 		setContextMenu(new DividendeMenu(aktie));
 		setRememberOrder(true);
 		setRememberColWidths(true);

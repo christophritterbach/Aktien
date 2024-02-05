@@ -1,7 +1,11 @@
 package de.ritterbach.jameica.aktien.gui.action;
 
+import java.rmi.RemoteException;
+
 import de.ritterbach.jameica.aktien.Settings;
+import de.ritterbach.jameica.aktien.rmi.Dividende;
 import de.ritterbach.jameica.aktien.rmi.Kauf;
+import de.ritterbach.jameica.aktien.rmi.V_Kauf;
 import de.willuhn.jameica.gui.Action;
 import de.willuhn.jameica.messaging.StatusBarMessage;
 import de.willuhn.jameica.system.Application;
@@ -12,9 +16,17 @@ public class KaufDeleteAction implements Action {
 
 	@Override
 	public void handleAction(Object context) throws ApplicationException {
-		if (context == null || !(context instanceof Kauf))
+		Kauf kauf = null;
+		if (context != null && context instanceof Dividende)
+			kauf = (Kauf) context;
+		else if ((context != null && context instanceof V_Kauf))
+			try {
+				kauf = ((V_Kauf) context).getKauf();
+			} catch (RemoteException e1) {
+				e1.printStackTrace();
+			}
+		if (context == null)
 			throw new ApplicationException(Settings.i18n().tr("please choose a kauf"));
-		Kauf kauf = (Kauf) context;
 		try {
 			// before deleting the abschlag, we show up a confirm dialog ;)
 			String question = Settings.i18n().tr("Do you really want to delete this kauf?");

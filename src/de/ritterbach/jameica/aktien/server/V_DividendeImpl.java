@@ -6,8 +6,10 @@ import java.util.Date;
 
 import de.ritterbach.jameica.aktien.Settings;
 import de.ritterbach.jameica.aktien.rmi.Aktie;
+import de.ritterbach.jameica.aktien.rmi.Dividende;
 import de.ritterbach.jameica.aktien.rmi.V_Dividende;
 import de.willuhn.datasource.db.AbstractDBObject;
+import de.willuhn.datasource.rmi.DBIterator;
 import de.willuhn.datasource.rmi.ObjectNotFoundException;
 import de.willuhn.util.ApplicationException;
 
@@ -29,6 +31,21 @@ public class V_DividendeImpl extends AbstractDBObject implements V_Dividende {
 	@Override
 	public void setAktie(Aktie aktie) throws RemoteException {
 		setAttribute("aktien_id", aktie);
+	}
+
+	@Override
+	public Dividende getDividende() throws RemoteException {
+		try {
+			DBIterator<Dividende> dividenden = Settings.getDBService().createList(Dividende.class);
+			dividenden.addFilter("id=?", this.getID());
+			if (dividenden.hasNext()) {
+				return dividenden.next();
+			} else {
+				return null;
+			}
+		} catch (ObjectNotFoundException e) {
+			return null;
+		}
 	}
 
 	@Override
@@ -131,6 +148,15 @@ public class V_DividendeImpl extends AbstractDBObject implements V_Dividende {
 		return "v_dividende";
 	}
 
+	@Override
+	protected Class getForeignObject(String field) throws RemoteException {
+		// the system is able to resolve foreign keys and loads
+		// the according objects automatically. You only have to
+		// define which class handles which foreign key.
+		if ("aktien_id".equals(field))
+			return Aktie.class;
+		return null;
+	}
 	protected void insertCheck() throws ApplicationException {
 		throw new ApplicationException(Settings.i18n().tr("can not store into view"));
 	}

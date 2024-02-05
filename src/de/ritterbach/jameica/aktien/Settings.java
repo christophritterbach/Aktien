@@ -69,6 +69,9 @@ public class Settings extends de.willuhn.util.Settings {
 	public final static DecimalFormat ANZAHLFORMAT = new DecimalFormat("#0.000",
 			new DecimalFormatSymbols(Application.getConfig().getLocale()));
 
+	public final static DecimalFormat KUSRFORMAT = new DecimalFormat("#0.0000",
+			new DecimalFormatSymbols(Application.getConfig().getLocale()));
+
 	/**
 	 * Our currency name.
 	 */

@@ -6,8 +6,10 @@ import java.util.Date;
 
 import de.ritterbach.jameica.aktien.Settings;
 import de.ritterbach.jameica.aktien.rmi.Aktie;
+import de.ritterbach.jameica.aktien.rmi.Kauf;
 import de.ritterbach.jameica.aktien.rmi.V_Kauf;
 import de.willuhn.datasource.db.AbstractDBObject;
+import de.willuhn.datasource.rmi.DBIterator;
 import de.willuhn.datasource.rmi.ObjectNotFoundException;
 import de.willuhn.util.ApplicationException;
 
@@ -29,6 +31,21 @@ public class V_KaufImpl extends AbstractDBObject implements V_Kauf {
 	@Override
 	public void setAktie(Aktie aktie) throws RemoteException {
 		setAttribute("aktien_id", aktie);
+	}
+
+	@Override
+	public Kauf getKauf() throws RemoteException {
+		try {
+			DBIterator<Kauf> kauf = Settings.getDBService().createList(Kauf.class);
+			kauf.addFilter("id=?", this.getID());
+			if (kauf.hasNext()) {
+				return kauf.next();
+			} else {
+				return null;
+			}
+		} catch (ObjectNotFoundException e) {
+			return null;
+		}
 	}
 
 	@Override
@@ -129,6 +146,16 @@ public class V_KaufImpl extends AbstractDBObject implements V_Kauf {
 	@Override
 	protected String getTableName() {
 		return "v_kauf";
+	}
+
+	@Override
+	protected Class getForeignObject(String field) throws RemoteException {
+		// the system is able to resolve foreign keys and loads
+		// the according objects automatically. You only have to
+		// define which class handles which foreign key.
+		if ("aktien_id".equals(field))
+			return Aktie.class;
+		return null;
 	}
 
 	protected void insertCheck() throws ApplicationException {

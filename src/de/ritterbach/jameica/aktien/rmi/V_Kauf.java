@@ -9,6 +9,7 @@ import de.willuhn.datasource.rmi.DBObject;
 public interface V_Kauf extends DBObject {
 	public Aktie getAktie() throws RemoteException;
 	public void setAktie(Aktie aktie) throws RemoteException;
+	public Kauf getKauf() throws RemoteException;
 	public Date getKaufDatum() throws RemoteException;
 	public void setKaufDatum(Date kaufDatum) throws RemoteException;
 	public BigDecimal getAnzahl() throws RemoteException;

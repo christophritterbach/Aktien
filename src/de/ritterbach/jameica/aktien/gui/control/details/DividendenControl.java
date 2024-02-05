@@ -123,9 +123,8 @@ public class DividendenControl extends AbstractControl {
 		if (wechselkurs != null)
 			return wechselkurs;
 
-		wechselkurs = new DecimalInput(getDividende().getDevisenkurs(), Settings.DECIMALFORMAT);
+		wechselkurs = new DecimalInput(getDividende().getDevisenkurs(), Settings.KUSRFORMAT);
 		wechselkurs.setName(Settings.i18n().tr("Wechselkurs"));
-		wechselkurs.setComment(Settings.CURRENCY);
 		return this.wechselkurs;
 	}
 

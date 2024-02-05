@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import de.ritterbach.jameica.aktien.AktienPlugin;
 import de.ritterbach.jameica.aktien.Settings;
 import de.ritterbach.jameica.aktien.formatter.DecimalFormatter;
+import de.ritterbach.jameica.aktien.gui.menu.KaufListMenu;
 import de.ritterbach.jameica.aktien.rmi.Aktie;
 import de.ritterbach.jameica.aktien.rmi.V_Kauf;
 import de.willuhn.datasource.GenericIterator;
@@ -74,7 +75,7 @@ public class KaufListPart extends TablePart implements Part {
 		addColumn(i18n.tr("Bemerkung"), "bemerkung");
 		addColumn(i18n.tr("ISIN"), "isin");
 		addColumn(i18n.tr("Bezeichnung"), "bezeichnung");
-		//setContextMenu(new KaufMenu());
+		setContextMenu(new KaufListMenu());
 		setRememberOrder(true);
 		setRememberColWidths(true);
 	}

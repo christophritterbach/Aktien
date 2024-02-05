@@ -13,6 +13,8 @@ import org.eclipse.swt.widgets.TabFolder;
 
 import de.ritterbach.jameica.aktien.AktienPlugin;
 import de.ritterbach.jameica.aktien.Settings;
+import de.ritterbach.jameica.aktien.formatter.KursFormatter;
+import de.ritterbach.jameica.aktien.gui.menu.DividendeListMenu;
 import de.ritterbach.jameica.aktien.rmi.Aktie;
 import de.ritterbach.jameica.aktien.rmi.V_Dividende;
 import de.willuhn.datasource.GenericIterator;
@@ -68,11 +70,11 @@ public class DividendeListPart extends TablePart implements Part {
 		addColumn(i18n.tr("pro Stueck"), "pro_stueck", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
 		addColumn(i18n.tr("Gesamt"), "gesamt", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
 		addColumn(i18n.tr("Quellensteuer"), "quellensteuer", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
-		addColumn(i18n.tr("Wechselkurs"), "devisenkurs", new CurrencyFormatter(Settings.CURRENCY, null), false, Column.ALIGN_RIGHT);
+		addColumn(i18n.tr("Wechselkurs"), "devisenkurs", new KursFormatter(null), false, Column.ALIGN_RIGHT);
 		addColumn(i18n.tr("Waehrung"), "waehrung");
 		addColumn(i18n.tr("ISIN"), "isin");
 		addColumn(i18n.tr("Bezeichnung"), "bezeichnung");
-		//setContextMenu(new DividendeMenu());
+		setContextMenu(new DividendeListMenu());
 		setRememberOrder(true);
 		setRememberColWidths(true);
 	}
